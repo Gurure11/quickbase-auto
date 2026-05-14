@@ -19,358 +19,70 @@
   --border:#e5e7eb;
   --shadow:0 8px 30px rgba(15,23,42,.08);
 }
-
 *{box-sizing:border-box}
-
-body{
-  margin:0;
-  font-family:Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--text);
-}
-
-.app-shell{
-  min-height:100vh;
-  display:flex;
-}
-
-.sidebar{
-  width:270px;
-  min-height:100vh;
-  background:var(--dark);
-  color:white;
-  padding:20px;
-  position:fixed;
-  left:0;
-  top:0;
-  bottom:0;
-  z-index:20;
-  transition:transform .25s ease;
-}
-
-.brand{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:10px;
-  margin-bottom:24px;
-}
-
-.brand h2{
-  margin:0;
-  font-size:22px;
-}
-
-.close-menu{
-  display:none;
-  background:transparent;
-  color:white;
-  font-size:24px;
-  padding:4px 8px;
-}
-
-.nav-link{
-  display:block;
-  color:white;
-  text-decoration:none;
-  padding:12px 14px;
-  margin:6px 0;
-  border-radius:10px;
-  cursor:pointer;
-}
-
-.nav-link:hover,
-.nav-link.active{
-  background:var(--dark2);
-}
-
-.sidebar-footer{
-  position:absolute;
-  left:20px;
-  right:20px;
-  bottom:20px;
-  color:#cbd5e1;
-  font-size:13px;
-}
-
-.main{
-  margin-left:270px;
-  padding:24px;
-  width:calc(100% - 270px);
-}
-
-.topbar{
-  background:var(--panel);
-  border-radius:18px;
-  box-shadow:var(--shadow);
-  padding:16px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:15px;
-  margin-bottom:24px;
-}
-
-.menu-btn{
-  display:none;
-  background:var(--dark);
-}
-
-.status-pill{
-  display:inline-flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 12px;
-  border-radius:999px;
-  font-size:13px;
-  background:#fee2e2;
-  color:#991b1b;
-}
-
-.status-pill.connected{
-  background:#dcfce7;
-  color:#166534;
-}
-
-.dot{
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  background:currentColor;
-}
-
-.auth-screen{
-  min-height:100vh;
-  display:grid;
-  place-items:center;
-  padding:20px;
-  background:linear-gradient(135deg,#111827,#2563eb);
-}
-
-.auth-card{
-  width:min(980px,100%);
-  background:white;
-  border-radius:24px;
-  box-shadow:0 20px 70px rgba(0,0,0,.25);
-  overflow:hidden;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-}
-
-.auth-hero{
-  background:#111827;
-  color:white;
-  padding:42px;
-}
-
-.auth-hero h1{
-  font-size:38px;
-  margin:0 0 15px;
-}
-
-.auth-hero p{
-  color:#cbd5e1;
-  line-height:1.6;
-}
-
-.auth-form{
-  padding:42px;
-}
-
-.tabs{
-  display:flex;
-  gap:10px;
-  margin-bottom:18px;
-}
-
-.tab-btn{
-  flex:1;
-  background:#e5e7eb;
-  color:#111827;
-}
-
-.tab-btn.active{
-  background:var(--blue);
-  color:white;
-}
-
-.form-row{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-input,select,textarea{
-  width:100%;
-  padding:12px;
-  margin-bottom:12px;
-  border:1px solid #d1d5db;
-  border-radius:10px;
-  font-size:14px;
-}
-
-button{
-  background:var(--blue);
-  color:white;
-  border:none;
-  padding:12px 18px;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:600;
-}
-
-button.secondary{
-  background:#e5e7eb;
-  color:#111827;
-}
-
-button.danger{
-  background:var(--red);
-}
-
-button.full{
-  width:100%;
-}
-
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:18px;
-  margin-bottom:24px;
-}
-
-.card,.section{
-  background:white;
-  border-radius:18px;
-  box-shadow:var(--shadow);
-}
-
-.card{
-  padding:24px;
-}
-
-.card h3{
-  margin:0 0 10px;
-  color:var(--muted);
-  font-size:14px;
-  text-transform:uppercase;
-  letter-spacing:.05em;
-}
-
-.card p{
-  margin:0;
-  font-size:28px;
-  font-weight:700;
-}
-
-.section{
-  padding:22px;
-  margin-bottom:24px;
-}
-
-.section-header{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  margin-bottom:15px;
-}
-
-.section h2{
-  margin:0;
-}
-
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-  gap:12px;
-}
-
-.table-wrap{
-  width:100%;
-  overflow-x:auto;
-}
-
-table{
-  width:100%;
-  border-collapse:collapse;
-  min-width:600px;
-}
-
-th,td{
-  border-bottom:1px solid var(--border);
-  padding:12px;
-  text-align:left;
-}
-
-th{
-  background:#f9fafb;
-  color:#374151;
-}
-
-.page{
-  display:none;
-}
-
-.page.active{
-  display:block;
-}
-
-.notice{
-  padding:12px 14px;
-  border-radius:10px;
-  background:#eff6ff;
-  color:#1e40af;
-  margin-bottom:14px;
-}
-
-.error{
-  background:#fee2e2;
-  color:#991b1b;
-}
-
-.success{
-  background:#dcfce7;
-  color:#166534;
-}
-
-.hidden{
-  display:none!important;
-}
-
-@media(max-width:850px){
-  .auth-card{
-    grid-template-columns:1fr;
-  }
-  .auth-hero{
-    padding:28px;
-  }
-}
-
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+.app-shell{min-height:100vh;display:flex}
+.sidebar{width:270px;min-height:100vh;background:var(--dark);color:white;padding:20px;position:fixed;left:0;top:0;bottom:0;z-index:20;transition:transform .25s ease;overflow-y:auto}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:24px}
+.brand h2{margin:0;font-size:22px}
+.close-menu{display:none;background:transparent;color:white;font-size:24px;padding:4px 8px}
+.nav-link{display:block;color:white;text-decoration:none;padding:12px 14px;margin:6px 0;border-radius:10px;cursor:pointer}
+.nav-link:hover,.nav-link.active{background:var(--dark2)}
+.sidebar-footer{margin-top:28px;color:#cbd5e1;font-size:13px}
+.main{margin-left:270px;padding:24px;width:calc(100% - 270px)}
+.topbar{background:var(--panel);border-radius:18px;box-shadow:var(--shadow);padding:16px 20px;display:flex;align-items:center;justify-content:space-between;gap:15px;margin-bottom:24px;position:sticky;top:10px;z-index:10}
+.menu-btn{display:none;background:var(--dark)}
+.status-pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;font-size:13px;background:#fee2e2;color:#991b1b}
+.status-pill.connected{background:#dcfce7;color:#166534}
+.dot{width:9px;height:9px;border-radius:50%;background:currentColor}
+.auth-screen{min-height:100vh;display:grid;place-items:center;padding:20px;background:linear-gradient(135deg,#111827,#2563eb)}
+.auth-card{width:min(980px,100%);background:white;border-radius:24px;box-shadow:0 20px 70px rgba(0,0,0,.25);overflow:hidden;display:grid;grid-template-columns:1fr 1fr}
+.auth-hero{background:#111827;color:white;padding:42px}
+.auth-hero h1{font-size:38px;margin:0 0 15px}
+.auth-hero p{color:#cbd5e1;line-height:1.6}
+.auth-form{padding:42px}
+.tabs{display:flex;gap:10px;margin-bottom:18px;flex-wrap:wrap}
+.tab-btn{flex:1;background:#e5e7eb;color:#111827}
+.tab-btn.active{background:var(--blue);color:white}
+input,select,textarea{width:100%;padding:12px;margin-bottom:12px;border:1px solid #d1d5db;border-radius:10px;font-size:14px;background:white}
+textarea{min-height:90px;resize:vertical}
+button{background:var(--blue);color:white;border:none;padding:12px 18px;border-radius:10px;cursor:pointer;font-weight:600}
+button.secondary{background:#e5e7eb;color:#111827}
+button.danger{background:var(--red)}
+button.full{width:100%}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-bottom:24px}
+.card,.section{background:white;border-radius:18px;box-shadow:var(--shadow)}
+.card{padding:24px}
+.card h3{margin:0 0 10px;color:var(--muted);font-size:14px;text-transform:uppercase;letter-spacing:.05em}
+.card p{margin:0;font-size:28px;font-weight:700}
+.section{padding:22px;margin-bottom:24px}
+.section-header{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:15px;flex-wrap:wrap}
+.section h2,.section h3{margin:0}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.table-wrap{width:100%;overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:700px}
+th,td{border-bottom:1px solid var(--border);padding:12px;text-align:left;vertical-align:top}
+th{background:#f9fafb;color:#374151}
+.page{display:none}
+.page.active{display:block}
+.notice,.error,.success{padding:12px 14px;border-radius:10px;margin-bottom:14px}
+.notice{background:#eff6ff;color:#1e40af}
+.error{background:#fee2e2;color:#991b1b}
+.success{background:#dcfce7;color:#166534}
+.hidden{display:none!important}
+.module-group{border:1px solid var(--border);border-radius:16px;padding:16px;margin-top:14px;background:#fff}
+.small-text{font-size:13px;color:var(--muted)}
+.form-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:4px}
+.badge{display:inline-block;padding:5px 9px;border-radius:999px;background:#eef2ff;color:#3730a3;font-size:12px;font-weight:700}
+@media(max-width:850px){.auth-card{grid-template-columns:1fr}.auth-hero{padding:28px}}
 @media(max-width:760px){
-  .sidebar{
-    transform:translateX(-100%);
-  }
-  .sidebar.open{
-    transform:translateX(0);
-  }
-  .close-menu{
-    display:block;
-  }
-  .main{
-    margin-left:0;
-    width:100%;
-    padding:14px;
-  }
-  .menu-btn{
-    display:inline-block;
-  }
-  .topbar{
-    border-radius:14px;
-  }
-  .form-row{
-    grid-template-columns:1fr;
-  }
+  .sidebar{transform:translateX(-100%)}
+  .sidebar.open{transform:translateX(0)}
+  .close-menu{display:block}
+  .main{margin-left:0;width:100%;padding:14px}
+  .menu-btn{display:inline-block}
+  .topbar{border-radius:14px;align-items:flex-start;flex-direction:column}
+  .grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -385,21 +97,17 @@ th{
       <p><strong>Sheet ID:</strong><br>1Y9gmsu_LQU_8lHxcTpPj1N1zgxdSVbmKmD-ulCBtEXM</p>
       <div id="authConnectionStatus" class="status-pill"><span class="dot"></span><span>Not connected</span></div>
     </div>
-
     <div class="auth-form">
       <div class="tabs">
-        <button class="tab-btn active" onclick="showAuthTab('login')">Login</button>
-        <button class="tab-btn" onclick="showAuthTab('register')">Register</button>
+        <button class="tab-btn active" onclick="showAuthTabManual('login')">Login</button>
+        <button class="tab-btn" onclick="showAuthTabManual('register')">Register</button>
       </div>
-
       <div id="authMessage"></div>
-
       <div id="loginForm">
         <input id="loginEmail" type="email" placeholder="Email address">
         <input id="loginPassword" type="password" placeholder="Password">
         <button class="full" onclick="loginUser()">Login</button>
       </div>
-
       <div id="registerForm" class="hidden">
         <input id="regFullName" type="text" placeholder="Full name">
         <input id="regEmail" type="email" placeholder="Email address">
@@ -411,44 +119,32 @@ th{
         </select>
         <button class="full" onclick="registerUser()">Create Account</button>
       </div>
-
-      <p style="color:#6b7280;font-size:13px;margin-top:18px">
-        First deploy your Apps Script as a Web App, then paste the Web App URL into <strong>API_URL</strong> in this HTML file.
-      </p>
+      <p class="small-text" style="margin-top:18px">Deploy Apps Script as a Web App, then paste the Web App URL into <strong>API_URL</strong> in this HTML file.</p>
     </div>
   </div>
 </div>
 
 <div id="appShell" class="app-shell hidden">
-
   <aside id="sidebar" class="sidebar">
-    <div class="brand">
-      <h2>OnPoint Group</h2>
-      <button class="close-menu" onclick="toggleSidebar()">×</button>
-    </div>
-
+    <div class="brand"><h2>OnPoint Group</h2><button class="close-menu" onclick="toggleSidebar()">×</button></div>
     <a class="nav-link active" onclick="showPage('dashboard', this)">Dashboard</a>
     <a class="nav-link" onclick="showPage('crm', this)">CRM</a>
+    <a class="nav-link" onclick="showPage('tasks', this)">Tasks</a>
     <a class="nav-link" onclick="showPage('hr', this)">HR</a>
     <a class="nav-link" onclick="showPage('projects', this)">Projects</a>
     <a class="nav-link" onclick="showPage('inventory', this)">Inventory</a>
     <a class="nav-link" onclick="showPage('finance', this)">Finance</a>
     <a class="nav-link" onclick="showPage('logistics', this)">Logistics</a>
     <a class="nav-link" onclick="showPage('settings', this)">Settings</a>
-
     <div class="sidebar-footer">
-      <div id="userLabel">Logged in</div>
-      <br>
+      <div id="userLabel">Logged in</div><br>
       <button class="danger full" onclick="logoutUser()">Logout</button>
     </div>
   </aside>
 
   <main class="main">
     <div class="topbar">
-      <div>
-        <button class="menu-btn" onclick="toggleSidebar()">☰ Menu</button>
-        <strong id="pageTitle">Dashboard</strong>
-      </div>
+      <div><button class="menu-btn" onclick="toggleSidebar()">☰ Menu</button> <strong id="pageTitle">Dashboard</strong></div>
       <div id="connectionStatus" class="status-pill"><span class="dot"></span><span>Checking connection...</span></div>
     </div>
 
@@ -458,75 +154,48 @@ th{
         <div class="card"><h3>Users</h3><p id="userCount">0</p></div>
         <div class="card"><h3>Projects</h3><p id="projectCount">0</p></div>
         <div class="card"><h3>Products</h3><p id="productCount">0</p></div>
+        <div class="card"><h3>Tasks</h3><p id="taskCount">0</p></div>
+        <div class="card"><h3>Expenses</h3><p id="expenseCount">0</p></div>
       </div>
-
       <div class="section">
-        <div class="section-header">
-          <h2>Google Sheets Connection</h2>
-          <button onclick="refreshAll()">Refresh Data</button>
-        </div>
+        <div class="section-header"><h2>Dashboard Data Input</h2><button onclick="refreshAll()">Refresh Data</button></div>
         <div id="sheetInfo" class="notice">Connect your Apps Script Web App URL to show sheet tabs and counts.</div>
+        <div id="dashboardForms"></div>
       </div>
     </section>
 
     <section id="crm" class="page">
-      <div class="section">
-        <h2>CRM Leads</h2>
-        <div id="leadMessage"></div>
-        <div class="grid">
-          <input type="text" id="leadName" placeholder="Lead Name">
-          <input type="email" id="leadEmail" placeholder="Lead Email">
-          <input type="text" id="leadPhone" placeholder="Phone">
-          <select id="leadStatus">
-            <option value="New">New</option>
-            <option value="Contacted">Contacted</option>
-            <option value="Qualified">Qualified</option>
-            <option value="Converted">Converted</option>
-          </select>
-        </div>
-        <button onclick="saveLead()">Save Lead</button>
-      </div>
+      <div class="section"><div class="section-header"><h2>CRM</h2><button onclick="loadPageData('crm')">Reload CRM</button></div><div id="crmForms"></div></div>
+    </section>
 
-      <div class="section">
-        <div class="section-header">
-          <h2>Lead Records</h2>
-          <button class="secondary" onclick="loadLeads()">Reload Leads</button>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>Name</th><th>Email</th><th>Phone</th><th>Status</th><th>Assigned To</th><th>Date Created</th></tr>
-            </thead>
-            <tbody id="leadTable"></tbody>
-          </table>
-        </div>
-      </div>
+    <section id="tasks" class="page">
+      <div class="section"><div class="section-header"><h2>Tasks</h2><button onclick="loadPageData('tasks')">Reload Tasks</button></div><div id="tasksForms"></div></div>
     </section>
 
     <section id="hr" class="page">
-      <div class="section"><h2>HR</h2><p>Employee data will load from the <strong>Employees</strong> tab.</p><div id="employeesPreview"></div></div>
+      <div class="section"><div class="section-header"><h2>HR</h2><button onclick="loadPageData('hr')">Reload HR</button></div><div id="hrForms"></div></div>
     </section>
 
     <section id="projects" class="page">
-      <div class="section"><h2>Projects</h2><p>Project data will load from the <strong>Projects</strong> tab.</p><div id="projectsPreview"></div></div>
+      <div class="section"><div class="section-header"><h2>Projects</h2><button onclick="loadPageData('projects')">Reload Projects</button></div><div id="projectsForms"></div></div>
     </section>
 
     <section id="inventory" class="page">
-      <div class="section"><h2>Inventory</h2><p>Inventory data will load from the <strong>Products</strong> tab.</p><div id="productsPreview"></div></div>
+      <div class="section"><div class="section-header"><h2>Inventory</h2><button onclick="loadPageData('inventory')">Reload Inventory</button></div><div id="inventoryForms"></div></div>
     </section>
 
     <section id="finance" class="page">
-      <div class="section"><h2>Finance</h2><p>Finance data will load from the <strong>Expenses</strong> tab.</p><div id="expensesPreview"></div></div>
+      <div class="section"><div class="section-header"><h2>Finance</h2><button onclick="loadPageData('finance')">Reload Finance</button></div><div id="financeForms"></div></div>
     </section>
 
     <section id="logistics" class="page">
-      <div class="section"><h2>Logistics</h2><p>Logistics data will load from the <strong>Vehicles</strong>, <strong>Drivers</strong>, and <strong>Deliveries</strong> tabs.</p></div>
+      <div class="section"><div class="section-header"><h2>Logistics</h2><button onclick="loadPageData('logistics')">Reload Logistics</button></div><div id="logisticsForms"></div></div>
     </section>
 
     <section id="settings" class="page">
       <div class="section">
         <h2>Required Google Sheet Tabs</h2>
-        <p>Create these tabs or run the <strong>setupQuickbaseTabs()</strong> function in Apps Script.</p>
+        <p>Create these tabs or run <strong>setupQuickbaseTabs()</strong> in Apps Script.</p>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Module</th><th>Tabs</th></tr></thead>
@@ -545,14 +214,13 @@ th{
         </div>
       </div>
     </section>
-
   </main>
 </div>
 
 <script>
 /*
   IMPORTANT:
-  1. Deploy Code_fixed.gs as a Google Apps Script Web App.
+  1. Deploy Code_full_sections.gs as a Google Apps Script Web App.
   2. Copy the Web App URL.
   3. Paste it below in API_URL.
 */
@@ -560,275 +228,296 @@ const API_URL = "https://script.google.com/macros/s/AKfycbzbWrR87AHIvbrBTFPX-LdY
 
 let currentUser = JSON.parse(localStorage.getItem("onpointUser") || "null");
 
-function isConfigured(){
-  return API_URL && !API_URL.includes("PASTE_YOUR");
-}
+const SHEET_FIELDS = {
+  KPIs:["KPIID","KPIName","Value","Period","DateUpdated"],
+  Reports:["ReportID","ReportName","Module","CreatedBy","DateCreated"],
+  Analytics:["AnalyticsID","Metric","Value","DateCreated"],
 
+  Leads:["Name","Email","Phone","Status","AssignedTo","DateCreated"],
+  Contacts:["ContactID","FullName","Email","Phone","Company","Status"],
+  Clients:["ClientID","ClientName","Email","Phone","Status"],
+  Deals:["DealID","DealName","Client","Value","Stage","CloseDate"],
+  Invoices:["InvoiceID","Client","Amount","Status","DateCreated"],
+  Quotations:["QuoteID","Client","Amount","Status","DateCreated"],
+  Tasks:["TaskID","Title","AssignedTo","Status","DueDate"],
+  FollowUps:["FollowUpID","LeadEmail","Notes","NextDate","Status"],
+
+  Employees:["EmployeeID","FullName","Department","Position","Salary","Status"],
+  Departments:["DepartmentID","DepartmentName","Manager","Status"],
+  Attendance:["AttendanceID","EmployeeID","Date","ClockIn","ClockOut","Status"],
+  LeaveRequests:["LeaveID","EmployeeID","LeaveType","StartDate","EndDate","Status"],
+  Payroll:["PayrollID","EmployeeID","Month","Salary","Deductions","NetPay","Status"],
+  PerformanceReviews:["ReviewID","EmployeeID","Score","Comments","ReviewDate"],
+  Recruitment:["CandidateID","FullName","Position","Email","Stage","Status"],
+
+  Projects:["ProjectID","ProjectName","Manager","Status","Budget","Deadline"],
+  ProjectTasks:["TaskID","ProjectID","TaskName","AssignedTo","Status","DueDate"],
+  Milestones:["MilestoneID","ProjectID","Title","DueDate","Status"],
+  Timesheets:["TimesheetID","EmployeeID","ProjectID","Hours","Date"],
+  Kanban:["CardID","ProjectID","Title","Column","AssignedTo"],
+
+  Products:["ProductID","ProductName","Category","Quantity","Price"],
+  Stock:["StockID","ProductID","Warehouse","Quantity","LastUpdated"],
+  Warehouses:["WarehouseID","WarehouseName","Location","Manager"],
+  Suppliers:["SupplierID","SupplierName","Email","Phone","Status"],
+  PurchaseOrders:["POID","Supplier","Amount","Status","DateCreated"],
+  Assets:["AssetID","AssetName","Category","AssignedTo","Status"],
+
+  Expenses:["ExpenseID","Description","Amount","Department","Date"],
+  Income:["IncomeID","Description","Amount","Source","Date"],
+  Budgets:["BudgetID","Department","Amount","Period","Status"],
+  AccountsPayable:["APID","Supplier","Amount","DueDate","Status"],
+  AccountsReceivable:["ARID","Client","Amount","DueDate","Status"],
+  Transactions:["TransactionID","Type","Description","Amount","Date"],
+
+  Vehicles:["VehicleID","Registration","Make","Model","Status"],
+  Drivers:["DriverID","FullName","Phone","LicenseNo","Status"],
+  Deliveries:["DeliveryID","Client","Driver","Vehicle","Status","DateCreated"],
+  Routes:["RouteID","RouteName","StartLocation","EndLocation","Status"],
+  FuelLogs:["FuelLogID","VehicleID","Litres","Amount","Date"],
+  Maintenance:["MaintenanceID","VehicleID","Description","Cost","Date"]
+};
+
+const PAGE_SHEETS = {
+  dashboard:["KPIs","Reports","Analytics"],
+  crm:["Leads","Contacts","Clients","Deals","Invoices","Quotations","FollowUps"],
+  tasks:["Tasks","ProjectTasks"],
+  hr:["Employees","Departments","Attendance","LeaveRequests","Payroll","PerformanceReviews","Recruitment"],
+  projects:["Projects","ProjectTasks","Milestones","Timesheets","Kanban"],
+  inventory:["Products","Stock","Warehouses","Suppliers","PurchaseOrders","Assets"],
+  finance:["Expenses","Income","Budgets","AccountsPayable","AccountsReceivable","Transactions"],
+  logistics:["Vehicles","Drivers","Deliveries","Routes","FuelLogs","Maintenance"]
+};
+
+function isConfigured(){return API_URL && !API_URL.includes("PASTE_YOUR")}
+function cleanId(text){return text.replace(/[^a-zA-Z0-9]/g,"")}
+function nowIso(){return new Date().toISOString()}
 function showMessage(elementId, message, type="notice"){
-  const el = document.getElementById(elementId);
-  if(!el) return;
-  el.innerHTML = `<div class="${type}">${message}</div>`;
+  const el=document.getElementById(elementId); if(!el)return;
+  el.innerHTML=`<div class="${type}">${message}</div>`;
 }
-
-function setConnectionStatus(connected, text){
+function setConnectionStatus(connected,text){
   ["connectionStatus","authConnectionStatus"].forEach(id=>{
-    const el = document.getElementById(id);
-    if(!el) return;
-    el.className = connected ? "status-pill connected" : "status-pill";
-    el.innerHTML = `<span class="dot"></span><span>${text}</span>`;
+    const el=document.getElementById(id); if(!el)return;
+    el.className=connected?"status-pill connected":"status-pill";
+    el.innerHTML=`<span class="dot"></span><span>${text}</span>`;
   });
 }
-
-function toggleSidebar(){
-  document.getElementById("sidebar").classList.toggle("open");
-}
-
-function showPage(pageId, link){
+function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open")}
+function showPage(pageId,link){
   document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
   document.getElementById(pageId).classList.add("active");
-
   document.querySelectorAll(".nav-link").forEach(a=>a.classList.remove("active"));
   if(link) link.classList.add("active");
-
-  document.getElementById("pageTitle").innerText = link ? link.innerText : "Dashboard";
-
-  if(window.innerWidth <= 760){
-    document.getElementById("sidebar").classList.remove("open");
-  }
+  document.getElementById("pageTitle").innerText=link?link.innerText:"Dashboard";
+  if(window.innerWidth<=760) document.getElementById("sidebar").classList.remove("open");
+  loadPageData(pageId);
 }
-
-function showAuthTab(tab){
-  document.getElementById("loginForm").classList.toggle("hidden", tab !== "login");
-  document.getElementById("registerForm").classList.toggle("hidden", tab !== "register");
-  document.querySelectorAll(".tab-btn").forEach(btn=>btn.classList.remove("active"));
-  event.target.classList.add("active");
-  document.getElementById("authMessage").innerHTML = "";
+function showAuthTabManual(tab){
+  document.getElementById("loginForm").classList.toggle("hidden",tab!=="login");
+  document.getElementById("registerForm").classList.toggle("hidden",tab!=="register");
+  const buttons=document.querySelectorAll(".tab-btn");
+  buttons[0].classList.toggle("active",tab==="login");
+  buttons[1].classList.toggle("active",tab==="register");
+  document.getElementById("authMessage").innerHTML="";
 }
-
 async function apiGet(params){
-  if(!isConfigured()){
-    throw new Error("Paste your deployed Google Apps Script Web App URL into API_URL first.");
-  }
-  const url = `${API_URL}?${new URLSearchParams(params).toString()}`;
-  const response = await fetch(url);
+  if(!isConfigured()) throw new Error("Paste your deployed Google Apps Script Web App URL into API_URL first.");
+  const url=`${API_URL}?${new URLSearchParams(params).toString()}`;
+  const response=await fetch(url);
   return await response.json();
 }
-
 async function apiPost(body){
-  if(!isConfigured()){
-    throw new Error("Paste your deployed Google Apps Script Web App URL into API_URL first.");
-  }
-  const response = await fetch(API_URL, {
-    method:"POST",
-    body:JSON.stringify(body)
-  });
+  if(!isConfigured()) throw new Error("Paste your deployed Google Apps Script Web App URL into API_URL first.");
+  const response=await fetch(API_URL,{method:"POST",body:JSON.stringify(body)});
   return await response.json();
 }
+async function fetchSheetData(sheet){return await apiGet({action:"fetch",sheet})}
+async function insertSheetData(sheet,payload){return await apiPost({action:"insert",sheet,payload})}
 
-async function fetchSheetData(sheet){
-  return await apiGet({action:"fetch", sheet});
+function inputType(field){
+  const f=field.toLowerCase();
+  if(f.includes("email")) return "email";
+  if(f.includes("date") || f.includes("deadline") || f.includes("duedate") || f.includes("nextdate") || f.includes("reviewdate")) return "date";
+  if(f.includes("amount") || f.includes("salary") || f.includes("budget") || f.includes("quantity") || f.includes("price") || f.includes("value") || f.includes("hours") || f.includes("score") || f.includes("deductions") || f.includes("netpay") || f.includes("cost") || f.includes("litres")) return "number";
+  if(f.includes("phone")) return "tel";
+  return "text";
 }
-
-async function insertSheetData(sheet,payload){
-  return await apiPost({action:"insert", sheet, payload});
+function defaultValue(sheet,field){
+  if(field.endsWith("ID") || field==="TaskID" || field==="KPIID" || field==="POID" || field==="APID" || field==="ARID") return sheet.substring(0,3).toUpperCase()+"-"+Date.now();
+  if(["DateCreated","DateUpdated","LastUpdated"].includes(field)) return nowIso();
+  if(field==="AssignedTo" && currentUser) return currentUser.Email || "";
+  if(field==="CreatedBy" && currentUser) return currentUser.Email || "";
+  if(field==="Status") return "New";
+  return "";
 }
-
+function renderSheetModule(sheet, containerId){
+  const fields=SHEET_FIELDS[sheet] || [];
+  const id=cleanId(sheet);
+  const formFields=fields.map(field=>{
+    const type=inputType(field);
+    const readonly = ["DateCreated","DateUpdated","LastUpdated"].includes(field) ? "readonly" : "";
+    const value = defaultValue(sheet,field);
+    if(field==="Status"){
+      return `<select id="${id}_${field}"><option>New</option><option>Active</option><option>Pending</option><option>In Progress</option><option>Completed</option><option>Closed</option><option>Inactive</option></select>`;
+    }
+    return `<input id="${id}_${field}" type="${type}" placeholder="${field}" value="${value}" ${readonly}>`;
+  }).join("");
+  return `
+    <div class="module-group">
+      <div class="section-header">
+        <div>
+          <h3>${sheet} <span class="badge">${fields.length} fields</span></h3>
+          <div class="small-text">Posts to and fetches from Google Sheet tab: <strong>${sheet}</strong></div>
+        </div>
+        <button class="secondary" onclick="loadSheetTable('${sheet}')">Reload ${sheet}</button>
+      </div>
+      <div id="${id}_message"></div>
+      <div class="grid">${formFields}</div>
+      <div class="form-actions">
+        <button onclick="saveGenericRecord('${sheet}')">Save ${sheet}</button>
+        <button class="secondary" onclick="clearGenericForm('${sheet}')">Clear</button>
+      </div>
+      <br>
+      <div class="table-wrap">
+        <table>
+          <thead><tr>${fields.map(f=>`<th>${f}</th>`).join("")}</tr></thead>
+          <tbody id="${id}_table"><tr><td colspan="${fields.length}">Loading ${sheet}...</td></tr></tbody>
+        </table>
+      </div>
+    </div>`;
+}
+function buildAllSections(){
+  Object.keys(PAGE_SHEETS).forEach(page=>{
+    const el=document.getElementById(`${page}Forms`);
+    if(el) el.innerHTML=PAGE_SHEETS[page].map(sheet=>renderSheetModule(sheet)).join("");
+  });
+}
+function collectPayload(sheet){
+  const id=cleanId(sheet);
+  const payload={};
+  (SHEET_FIELDS[sheet] || []).forEach(field=>{
+    const input=document.getElementById(`${id}_${field}`);
+    payload[field]=input ? input.value : "";
+    if(!payload[field]) payload[field]=defaultValue(sheet,field);
+  });
+  return payload;
+}
+async function saveGenericRecord(sheet){
+  const id=cleanId(sheet);
+  try{
+    const payload=collectPayload(sheet);
+    const result=await insertSheetData(sheet,payload);
+    if(result.status==="success"){
+      showMessage(`${id}_message`,`${sheet} record saved successfully.`,"success");
+      clearGenericForm(sheet,true);
+      await loadSheetTable(sheet);
+      await refreshCountsOnly();
+    }else{
+      showMessage(`${id}_message`,result.message || `Could not save ${sheet}.`,"error");
+    }
+  }catch(error){showMessage(`${id}_message`,error.message,"error")}
+}
+function clearGenericForm(sheet, keepDefaults=false){
+  const id=cleanId(sheet);
+  (SHEET_FIELDS[sheet] || []).forEach(field=>{
+    const input=document.getElementById(`${id}_${field}`);
+    if(input) input.value = keepDefaults ? defaultValue(sheet,field) : "";
+  });
+}
+async function loadSheetTable(sheet){
+  const id=cleanId(sheet);
+  const fields=SHEET_FIELDS[sheet] || [];
+  const table=document.getElementById(`${id}_table`);
+  if(!table) return;
+  try{
+    const data=await fetchSheetData(sheet);
+    if(!data.length){
+      table.innerHTML=`<tr><td colspan="${fields.length}">No records found in ${sheet}.</td></tr>`;
+      return;
+    }
+    table.innerHTML=data.map(row=>`<tr>${fields.map(f=>`<td>${row[f] || ""}</td>`).join("")}</tr>`).join("");
+  }catch(error){
+    table.innerHTML=`<tr><td colspan="${fields.length}" class="error">${error.message}</td></tr>`;
+  }
+}
+async function loadPageData(page){
+  const sheets=PAGE_SHEETS[page] || [];
+  for(const sheet of sheets){ await loadSheetTable(sheet); }
+}
 async function checkConnection(){
   try{
     if(!isConfigured()){
       setConnectionStatus(false,"API URL not added");
-      document.getElementById("sheetInfo").innerHTML = "Paste your deployed Google Apps Script Web App URL into API_URL.";
+      const info=document.getElementById("sheetInfo"); if(info) info.innerHTML="Paste your deployed Google Apps Script Web App URL into API_URL.";
       return;
     }
-    const status = await apiGet({action:"status"});
-    if(status.status === "success"){
+    const status=await apiGet({action:"status"});
+    if(status.status==="success"){
       setConnectionStatus(true,"Connected to Google Sheets");
-      document.getElementById("sheetInfo").innerHTML =
-        `<strong>Connected.</strong><br><br><strong>Available tabs:</strong> ${status.tabs.join(", ")}`;
-    }else{
-      setConnectionStatus(false,status.message || "Connection failed");
-    }
+      const info=document.getElementById("sheetInfo");
+      if(info) info.innerHTML=`<strong>Connected.</strong><br><br><strong>Available tabs:</strong> ${status.tabs.join(", ")}`;
+    }else setConnectionStatus(false,status.message || "Connection failed");
   }catch(error){
     setConnectionStatus(false,"Connection failed");
-    const info = document.getElementById("sheetInfo");
-    if(info) info.innerHTML = error.message;
+    const info=document.getElementById("sheetInfo"); if(info) info.innerHTML=error.message;
   }
 }
-
 async function registerUser(){
   try{
-    const payload = {
-      UserID:"USR-" + Date.now(),
-      FullName:document.getElementById("regFullName").value.trim(),
-      Email:document.getElementById("regEmail").value.trim().toLowerCase(),
-      Password:document.getElementById("regPassword").value,
-      Role:document.getElementById("regRole").value,
-      Status:"Active",
-      DateCreated:new Date().toISOString()
-    };
-
-    if(!payload.FullName || !payload.Email || !payload.Password){
-      showMessage("authMessage","Please complete all registration fields.","error");
-      return;
-    }
-
-    const result = await apiPost({action:"register", sheet:"Users", payload});
-
-    if(result.status === "success"){
-      showMessage("authMessage","Account created. You can now login.","success");
-      showAuthTabManual("login");
-    }else{
-      showMessage("authMessage",result.message || "Registration failed.","error");
-    }
-  }catch(error){
-    showMessage("authMessage",error.message,"error");
-  }
+    const payload={UserID:"USR-"+Date.now(),FullName:document.getElementById("regFullName").value.trim(),Email:document.getElementById("regEmail").value.trim().toLowerCase(),Password:document.getElementById("regPassword").value,Role:document.getElementById("regRole").value,Status:"Active",DateCreated:nowIso()};
+    if(!payload.FullName || !payload.Email || !payload.Password){showMessage("authMessage","Please complete all registration fields.","error");return}
+    const result=await apiPost({action:"register",sheet:"Users",payload});
+    if(result.status==="success"){showMessage("authMessage","Account created. You can now login.","success");showAuthTabManual("login")}
+    else showMessage("authMessage",result.message || "Registration failed.","error");
+  }catch(error){showMessage("authMessage",error.message,"error")}
 }
-
-function showAuthTabManual(tab){
-  document.getElementById("loginForm").classList.toggle("hidden", tab !== "login");
-  document.getElementById("registerForm").classList.toggle("hidden", tab !== "register");
-  const buttons = document.querySelectorAll(".tab-btn");
-  buttons[0].classList.toggle("active", tab === "login");
-  buttons[1].classList.toggle("active", tab === "register");
-}
-
 async function loginUser(){
   try{
-    const email = document.getElementById("loginEmail").value.trim().toLowerCase();
-    const password = document.getElementById("loginPassword").value;
-
-    if(!email || !password){
-      showMessage("authMessage","Enter email and password.","error");
-      return;
-    }
-
-    const result = await apiPost({action:"login", sheet:"Users", email, password});
-
-    if(result.status === "success"){
-      currentUser = result.user;
-      localStorage.setItem("onpointUser", JSON.stringify(currentUser));
-      openApp();
-    }else{
-      showMessage("authMessage",result.message || "Login failed.","error");
-    }
-  }catch(error){
-    showMessage("authMessage",error.message,"error");
-  }
+    const email=document.getElementById("loginEmail").value.trim().toLowerCase();
+    const password=document.getElementById("loginPassword").value;
+    if(!email || !password){showMessage("authMessage","Enter email and password.","error");return}
+    const result=await apiPost({action:"login",sheet:"Users",email,password});
+    if(result.status==="success"){currentUser=result.user;localStorage.setItem("onpointUser",JSON.stringify(currentUser));openApp()}
+    else showMessage("authMessage",result.message || "Login failed.","error");
+  }catch(error){showMessage("authMessage",error.message,"error")}
 }
-
 function openApp(){
   document.getElementById("authScreen").classList.add("hidden");
   document.getElementById("appShell").classList.remove("hidden");
-  document.getElementById("userLabel").innerText = currentUser ? `${currentUser.FullName || currentUser.Email} (${currentUser.Role || "User"})` : "Logged in";
+  document.getElementById("userLabel").innerText=currentUser ? `${currentUser.FullName || currentUser.Email} (${currentUser.Role || "User"})` : "Logged in";
   refreshAll();
 }
-
 function logoutUser(){
   localStorage.removeItem("onpointUser");
-  currentUser = null;
+  currentUser=null;
   document.getElementById("appShell").classList.add("hidden");
   document.getElementById("authScreen").classList.remove("hidden");
 }
-
-async function loadLeads(){
-  try{
-    const data = await fetchSheetData("Leads");
-    let html = "";
-    data.forEach(lead=>{
-      html += `
-        <tr>
-          <td>${lead.Name || ""}</td>
-          <td>${lead.Email || ""}</td>
-          <td>${lead.Phone || ""}</td>
-          <td>${lead.Status || ""}</td>
-          <td>${lead.AssignedTo || ""}</td>
-          <td>${lead.DateCreated || ""}</td>
-        </tr>`;
-    });
-    document.getElementById("leadTable").innerHTML = html || `<tr><td colspan="6">No leads yet.</td></tr>`;
-    document.getElementById("leadCount").innerText = data.length;
-  }catch(error){
-    showMessage("leadMessage", error.message, "error");
-  }
-}
-
-async function saveLead(){
-  try{
-    const payload = {
-      Name:document.getElementById("leadName").value.trim(),
-      Email:document.getElementById("leadEmail").value.trim(),
-      Phone:document.getElementById("leadPhone").value.trim(),
-      Status:document.getElementById("leadStatus").value,
-      AssignedTo: currentUser ? currentUser.Email : "",
-      DateCreated:new Date().toISOString()
-    };
-
-    if(!payload.Name || !payload.Email){
-      showMessage("leadMessage","Lead name and email are required.","error");
-      return;
-    }
-
-    const result = await insertSheetData("Leads", payload);
-
-    if(result.status === "success"){
-      ["leadName","leadEmail","leadPhone"].forEach(id=>document.getElementById(id).value = "");
-      showMessage("leadMessage","Lead saved successfully.","success");
-      loadLeads();
-    }else{
-      showMessage("leadMessage", result.message || "Could not save lead.", "error");
-    }
-  }catch(error){
-    showMessage("leadMessage", error.message, "error");
-  }
-}
-
 async function loadCount(sheet, elementId){
-  try{
-    const data = await fetchSheetData(sheet);
-    document.getElementById(elementId).innerText = data.length;
-  }catch(e){
-    document.getElementById(elementId).innerText = "0";
-  }
+  try{const data=await fetchSheetData(sheet); const el=document.getElementById(elementId); if(el) el.innerText=data.length}
+  catch(e){const el=document.getElementById(elementId); if(el) el.innerText="0"}
 }
-
-async function previewSheet(sheet, elementId){
-  try{
-    const data = await fetchSheetData(sheet);
-    const el = document.getElementById(elementId);
-    if(!el) return;
-    if(!data.length){
-      el.innerHTML = `<div class="notice">No records found in ${sheet}.</div>`;
-      return;
-    }
-    const headers = Object.keys(data[0]);
-    const rows = data.slice(0,5).map(row=>`<tr>${headers.map(h=>`<td>${row[h] || ""}</td>`).join("")}</tr>`).join("");
-    el.innerHTML = `<div class="table-wrap"><table><thead><tr>${headers.map(h=>`<th>${h}</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table></div>`;
-  }catch(e){
-    const el = document.getElementById(elementId);
-    if(el) el.innerHTML = `<div class="error">${e.message}</div>`;
-  }
-}
-
-async function refreshAll(){
-  await checkConnection();
-  await loadLeads();
+async function refreshCountsOnly(){
+  await loadCount("Leads","leadCount");
   await loadCount("Users","userCount");
   await loadCount("Projects","projectCount");
   await loadCount("Products","productCount");
-  await previewSheet("Employees","employeesPreview");
-  await previewSheet("Projects","projectsPreview");
-  await previewSheet("Products","productsPreview");
-  await previewSheet("Expenses","expensesPreview");
+  await loadCount("Tasks","taskCount");
+  await loadCount("Expenses","expenseCount");
 }
-
-window.addEventListener("load", async ()=>{
+async function refreshAll(){
   await checkConnection();
-  if(currentUser){
-    openApp();
-  }
+  await refreshCountsOnly();
+  await loadPageData("dashboard");
+  await loadPageData("crm");
+  await loadPageData("tasks");
+}
+window.addEventListener("load",async()=>{
+  buildAllSections();
+  await checkConnection();
+  if(currentUser) openApp();
 });
 </script>
-
 </body>
 </html>
