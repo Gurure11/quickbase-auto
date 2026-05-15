@@ -84,6 +84,26 @@ th{background:#f9fafb;color:#374151}
   .topbar{border-radius:14px;align-items:flex-start;flex-direction:column}
   .grid{grid-template-columns:1fr}
 }
+
+button{transition:transform .12s ease,box-shadow .12s ease,opacity .12s ease,background .12s ease}
+button:hover{transform:translateY(-1px);box-shadow:0 6px 18px rgba(37,99,235,.22);opacity:.95}
+button:active,button.clicked{transform:translateY(1px);box-shadow:inset 0 2px 6px rgba(0,0,0,.18);opacity:.9}
+button.syncing{background:#f59e0b!important;color:#111827!important;cursor:wait;opacity:.95}
+button.synced{background:var(--green)!important;color:white!important}
+.whatsapp-link{display:inline-block;background:#16a34a;color:white;text-decoration:none;padding:10px 14px;border-radius:10px;font-weight:700;margin-left:8px}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:14px}
+.summary-card{border:1px solid var(--border);border-radius:14px;padding:14px;background:#f9fafb}
+.summary-card h4{margin:0 0 8px;color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.04em}
+.summary-card p{margin:0;font-size:24px;font-weight:800}
+.score-good{color:#16a34a;font-weight:800}
+.score-warn{color:#f59e0b;font-weight:800}
+.score-bad{color:#dc2626;font-weight:800}
+
+
+.recurring-card{border:1px solid var(--border);border-radius:16px;padding:16px;background:#fff;margin-top:12px}
+.recurring-card strong{display:block;margin-bottom:6px}
+.person-pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#ecfdf5;color:#166534;font-size:12px;font-weight:700;margin:3px}
+
 </style>
 </head>
 
@@ -106,7 +126,7 @@ th{background:#f9fafb;color:#374151}
       <div id="loginForm">
         <input id="loginEmail" type="email" placeholder="Email address">
         <input id="loginPassword" type="password" placeholder="Password">
-        <button class="full" onclick="loginUser()">Login</button>
+        <button class="full" onclick="loginUser(this)">Login</button>
       </div>
       <div id="registerForm" class="hidden">
         <input id="regFullName" type="text" placeholder="Full name">
@@ -117,7 +137,7 @@ th{background:#f9fafb;color:#374151}
           <option value="Manager">Manager</option>
           <option value="Employee">Employee</option>
         </select>
-        <button class="full" onclick="registerUser()">Create Account</button>
+        <button class="full" onclick="registerUser(this)">Create Account</button>
       </div>
       <p class="small-text" style="margin-top:18px">Deploy Apps Script as a Web App, then paste the Web App URL into <strong>API_URL</strong> in this HTML file.</p>
     </div>
@@ -138,7 +158,7 @@ th{background:#f9fafb;color:#374151}
     <a class="nav-link" onclick="showPage('settings', this)">Settings</a>
     <div class="sidebar-footer">
       <div id="userLabel">Logged in</div><br>
-      <button class="danger full" onclick="logoutUser()">Logout</button>
+      <button class="danger full" onclick="logoutUser(this)">Logout</button>
     </div>
   </aside>
 
@@ -158,38 +178,86 @@ th{background:#f9fafb;color:#374151}
         <div class="card"><h3>Expenses</h3><p id="expenseCount">0</p></div>
       </div>
       <div class="section">
-        <div class="section-header"><h2>Dashboard Data Input</h2><button onclick="refreshAll()">Refresh Data</button></div>
+        <div class="section-header"><h2>Dashboard Data Input</h2><button onclick="refreshAll(this)">Refresh Data</button></div>
         <div id="sheetInfo" class="notice">Connect your Apps Script Web App URL to show sheet tabs and counts.</div>
         <div id="dashboardForms"></div>
       </div>
+    
+      <div class="section">
+        <div class="section-header"><h2>Automation Center</h2></div>
+        <div class="notice">
+          Your business system supports workflow automation.<br><br>
+          Examples:
+          <ul>
+            <li>Automatically create follow-up tasks for new leads</li>
+            <li>Send notifications for overdue projects</li>
+            <li>Track employee attendance automatically</li>
+            <li>Create finance approvals and workflow logs</li>
+          </ul>
+        </div>
+      </div>
+
     </section>
 
     <section id="crm" class="page">
-      <div class="section"><div class="section-header"><h2>CRM</h2><button onclick="loadPageData('crm')">Reload CRM</button></div><div id="crmForms"></div></div>
+      <div class="section"><div class="section-header"><h2>CRM</h2><button onclick="loadPageData('crm', this)">Reload CRM</button></div><div id="crmForms"></div></div>
     </section>
 
     <section id="tasks" class="page">
-      <div class="section"><div class="section-header"><h2>Tasks</h2><button onclick="loadPageData('tasks')">Reload Tasks</button></div><div id="tasksForms"></div></div>
+      <div class="section">
+        <div class="section-header"><h2>Task Performance Summary</h2><button onclick="renderTaskSummary(this)">Refresh Summary</button></div>
+        <div id="taskSummary" class="notice">Task summary will appear here after task data loads.</div>
+      </div>
+
+      <div class="section">
+        <div class="section-header">
+          <h2>Automated Recurring Tasks</h2>
+          <button onclick="loadRecurringTasks(this)">Refresh Automated Tasks</button>
+        </div>
+        <div class="notice">
+          Create tasks that repeat daily, weekly, or monthly. The backend can create reminders and email the assigned person automatically.
+        </div>
+        <div class="grid">
+          <input id="recurringTitle" type="text" placeholder="Recurring task title">
+          <select id="recurringAssignedTo"></select>
+          <select id="recurringFrequency">
+            <option value="Daily">Daily</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+          </select>
+          <input id="recurringStartDate" type="date" placeholder="Start date">
+          <input id="recurringWhatsapp" type="tel" placeholder="Optional WhatsApp number, e.g. 27821234567">
+        </div>
+        <textarea id="recurringNotes" placeholder="Reminder notes"></textarea>
+        <div class="form-actions">
+          <button onclick="saveRecurringTask(this)">Save Recurring Task</button>
+          <button class="secondary" onclick="clearRecurringTaskForm()">Clear</button>
+        </div>
+        <br>
+        <div id="recurringTasksList" class="notice">Recurring tasks will appear here.</div>
+      </div>
+
+      <div class="section"><div class="section-header"><h2>Tasks</h2><button onclick="loadPageData('tasks', this)">Reload Tasks</button></div><div id="tasksForms"></div></div>
     </section>
 
     <section id="hr" class="page">
-      <div class="section"><div class="section-header"><h2>HR</h2><button onclick="loadPageData('hr')">Reload HR</button></div><div id="hrForms"></div></div>
+      <div class="section"><div class="section-header"><h2>HR</h2><button onclick="loadPageData('hr', this)">Reload HR</button></div><div id="hrForms"></div></div>
     </section>
 
     <section id="projects" class="page">
-      <div class="section"><div class="section-header"><h2>Projects</h2><button onclick="loadPageData('projects')">Reload Projects</button></div><div id="projectsForms"></div></div>
+      <div class="section"><div class="section-header"><h2>Projects</h2><button onclick="loadPageData('projects', this)">Reload Projects</button></div><div id="projectsForms"></div></div>
     </section>
 
     <section id="inventory" class="page">
-      <div class="section"><div class="section-header"><h2>Inventory</h2><button onclick="loadPageData('inventory')">Reload Inventory</button></div><div id="inventoryForms"></div></div>
+      <div class="section"><div class="section-header"><h2>Inventory</h2><button onclick="loadPageData('inventory', this)">Reload Inventory</button></div><div id="inventoryForms"></div></div>
     </section>
 
     <section id="finance" class="page">
-      <div class="section"><div class="section-header"><h2>Finance</h2><button onclick="loadPageData('finance')">Reload Finance</button></div><div id="financeForms"></div></div>
+      <div class="section"><div class="section-header"><h2>Finance</h2><button onclick="loadPageData('finance', this)">Reload Finance</button></div><div id="financeForms"></div></div>
     </section>
 
     <section id="logistics" class="page">
-      <div class="section"><div class="section-header"><h2>Logistics</h2><button onclick="loadPageData('logistics')">Reload Logistics</button></div><div id="logisticsForms"></div></div>
+      <div class="section"><div class="section-header"><h2>Logistics</h2><button onclick="loadPageData('logistics', this)">Reload Logistics</button></div><div id="logisticsForms"></div></div>
     </section>
 
     <section id="settings" class="page">
@@ -224,9 +292,10 @@ th{background:#f9fafb;color:#374151}
   2. Copy the Web App URL.
   3. Paste it below in API_URL.
 */
-const API_URL = "https://script.google.com/macros/s/AKfycbziXC6NbqnXYvUPVxy4KoiqZfDh-oR9vCEO1RRxv0SPHghCoa0JghfldQC0C3gqQH25/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzUW1BtNv74id0Jbkwv3PjoCV_7wFXTk-0Kz8Zx41nIs26GsPaQkpYhFbH5QmOnL1c/exec";
 
 let currentUser = JSON.parse(localStorage.getItem("onpointUser") || "null");
+let systemPeople = [];
 
 const SHEET_FIELDS = {
   KPIs:["KPIID","KPIName","Value","Period","DateUpdated"],
@@ -240,6 +309,7 @@ const SHEET_FIELDS = {
   Invoices:["InvoiceID","Client","Amount","Status","DateCreated"],
   Quotations:["QuoteID","Client","Amount","Status","DateCreated"],
   Tasks:["TaskID","Title","AssignedTo","Status","DueDate"],
+  RecurringTasks:["RecurringTaskID","Title","AssignedTo","Frequency","StartDate","NextRunDate","Status","WhatsappNumber","Notes","DateCreated"],
   FollowUps:["FollowUpID","LeadEmail","Notes","NextDate","Status"],
 
   Employees:["EmployeeID","FullName","Department","Position","Salary","Status"],
@@ -296,6 +366,33 @@ function showMessage(elementId, message, type="notice"){
   const el=document.getElementById(elementId); if(!el)return;
   el.innerHTML=`<div class="${type}">${message}</div>`;
 }
+function setButtonSync(button,text="Synchronising..."){
+  if(!button) return null;
+  const oldText=button.innerText;
+  button.dataset.oldText=oldText;
+  button.classList.add("syncing","clicked");
+  button.disabled=true;
+  button.innerText=text;
+  return oldText;
+}
+function finishButtonSync(button,success=true){
+  if(!button) return;
+  button.classList.remove("syncing");
+  button.classList.add(success?"synced":"clicked");
+  button.innerText=success?"Done":(button.dataset.oldText || "Retry");
+  setTimeout(()=>{
+    button.classList.remove("synced","clicked");
+    button.disabled=false;
+    button.innerText=button.dataset.oldText || button.innerText;
+  },900);
+}
+document.addEventListener("click",function(event){
+  const btn=event.target.closest("button");
+  if(!btn) return;
+  btn.classList.add("clicked");
+  setTimeout(()=>btn.classList.remove("clicked"),220);
+});
+
 function setConnectionStatus(connected,text){
   ["connectionStatus","authConnectionStatus"].forEach(id=>{
     const el=document.getElementById(id); if(!el)return;
@@ -335,6 +432,75 @@ async function apiPost(body){
 async function fetchSheetData(sheet){return await apiGet({action:"fetch",sheet})}
 async function insertSheetData(sheet,payload){return await apiPost({action:"insert",sheet,payload})}
 
+
+function personLabel(person){
+  return person.FullName || person.Name || person.Email || person.Phone || "Unnamed";
+}
+function personEmail(person){
+  return person.Email || person.email || "";
+}
+function personPhone(person){
+  return person.Phone || person.WhatsappNumber || person.WhatsApp || person.Mobile || "";
+}
+async function loadSystemPeople(){
+  const peopleMap = {};
+  async function addFromSheet(sheet){
+    try{
+      const rows = await fetchSheetData(sheet);
+      (rows || []).forEach(row=>{
+        const label = row.FullName || row.Name || row.EmployeeName || row.Email || row.Phone;
+        if(!label) return;
+        const key = (row.Email || label).toLowerCase();
+        peopleMap[key] = {
+          FullName: row.FullName || row.Name || row.EmployeeName || label,
+          Email: row.Email || "",
+          Phone: row.Phone || row.WhatsappNumber || row.WhatsApp || row.Mobile || ""
+        };
+      });
+    }catch(e){}
+  }
+  await addFromSheet("Users");
+  await addFromSheet("Employees");
+  await addFromSheet("Contacts");
+  await addFromSheet("Clients");
+  systemPeople = Object.values(peopleMap).sort((a,b)=>personLabel(a).localeCompare(personLabel(b)));
+  populatePersonDropdowns();
+  return systemPeople;
+}
+function personOptionValue(person){
+  const label = personLabel(person);
+  const email = personEmail(person);
+  const phone = personPhone(person);
+  return JSON.stringify({name:label,email,phone});
+}
+function parsePersonOption(value){
+  try{return JSON.parse(value || "{}")}catch(e){return {name:value || "",email:"",phone:""}}
+}
+function populatePersonDropdowns(){
+  const options = ['<option value="">Choose assigned person</option>'].concat(
+    systemPeople.map(p=>`<option value='${personOptionValue(p).replace(/'/g,"&#39;")}'>${personLabel(p)}${personEmail(p) ? " - " + personEmail(p) : ""}</option>`)
+  ).join("");
+  document.querySelectorAll("select[data-person-select='true']").forEach(select=>{
+    const current = select.value;
+    select.innerHTML = options;
+    if(current) select.value = current;
+  });
+  const recurringSelect = document.getElementById("recurringAssignedTo");
+  if(recurringSelect){
+    const current = recurringSelect.value;
+    recurringSelect.innerHTML = options;
+    if(current) recurringSelect.value = current;
+  }
+}
+function applyPersonToTaskFields(sheet,selectedValue){
+  const id=cleanId(sheet);
+  const person=parsePersonOption(selectedValue);
+  const assigned=document.getElementById(`${id}_AssignedTo`);
+  const whatsapp=document.getElementById(`${id}_WhatsappNumber`);
+  if(assigned) assigned.value = person.email || person.name || "";
+  if(whatsapp && person.phone) whatsapp.value = person.phone;
+}
+
 function inputType(field){
   const f=field.toLowerCase();
   if(f.includes("email")) return "email";
@@ -354,10 +520,23 @@ function defaultValue(sheet,field){
 function renderSheetModule(sheet, containerId){
   const fields=SHEET_FIELDS[sheet] || [];
   const id=cleanId(sheet);
+  const isTaskSheet = sheet==="Tasks" || sheet==="ProjectTasks";
+  const taskNotifyOptions = isTaskSheet ? `
+    <div class="notice">
+      <strong>Task notifications</strong><br>
+      Choose an assigned person from the list. When the task is saved, Gmail sends the task email automatically in the background. A WhatsApp task message button will also show after saving if a WhatsApp number is available.
+      <div class="grid" style="margin-top:10px">
+        <label class="small-text"><input id="${id}_SendWhatsapp" type="checkbox" style="width:auto;margin-right:6px"> Show WhatsApp send option after saving</label>
+        <input id="${id}_WhatsappNumber" type="tel" placeholder="WhatsApp number with country code, e.g. 27821234567">
+      </div>
+    </div>` : "";
   const formFields=fields.map(field=>{
     const type=inputType(field);
     const readonly = ["DateCreated","DateUpdated","LastUpdated"].includes(field) ? "readonly" : "";
     const value = defaultValue(sheet,field);
+    if(isTaskSheet && field==="AssignedTo"){
+      return `<select id="${id}_${field}_Select" data-person-select="true" onchange="applyPersonToTaskFields('${sheet}', this.value)"><option value="">Choose assigned person</option></select><input id="${id}_${field}" type="hidden" value="${value}">`;
+    }
     if(field==="Status"){
       return `<select id="${id}_${field}"><option>New</option><option>Active</option><option>Pending</option><option>In Progress</option><option>Completed</option><option>Closed</option><option>Inactive</option></select>`;
     }
@@ -370,12 +549,13 @@ function renderSheetModule(sheet, containerId){
           <h3>${sheet} <span class="badge">${fields.length} fields</span></h3>
           <div class="small-text">Posts to and fetches from Google Sheet tab: <strong>${sheet}</strong></div>
         </div>
-        <button class="secondary" onclick="loadSheetTable('${sheet}')">Reload ${sheet}</button>
+        <button class="secondary" onclick="loadSheetTable('${sheet}', this)">Reload ${sheet}</button>
       </div>
       <div id="${id}_message"></div>
       <div class="grid">${formFields}</div>
+      ${taskNotifyOptions}
       <div class="form-actions">
-        <button onclick="saveGenericRecord('${sheet}')">Save ${sheet}</button>
+        <button onclick="saveGenericRecord('${sheet}', this)">Save ${sheet}</button>
         <button class="secondary" onclick="clearGenericForm('${sheet}')">Clear</button>
       </div>
       <br>
@@ -392,6 +572,7 @@ function buildAllSections(){
     const el=document.getElementById(`${page}Forms`);
     if(el) el.innerHTML=PAGE_SHEETS[page].map(sheet=>renderSheetModule(sheet)).join("");
   });
+  populatePersonDropdowns();
 }
 function collectPayload(sheet){
   const id=cleanId(sheet);
@@ -403,20 +584,36 @@ function collectPayload(sheet){
   });
   return payload;
 }
-async function saveGenericRecord(sheet){
+async function saveGenericRecord(sheet,button){
   const id=cleanId(sheet);
+  setButtonSync(button,"Synchronising...");
   try{
     const payload=collectPayload(sheet);
     const result=await insertSheetData(sheet,payload);
     if(result.status==="success"){
-      showMessage(`${id}_message`,`${sheet} record saved successfully.`,"success");
+      let extraMessage = "";
+      if(sheet==="Tasks" || sheet==="ProjectTasks"){
+        if(result.email && result.email.message){
+          extraMessage += " " + result.email.message;
+        }
+        extraMessage += buildTaskWhatsappMessage(sheet,payload);
+      }
+      showMessage(`${id}_message`,`${sheet} record saved successfully.${extraMessage}`,"success");
       clearGenericForm(sheet,true);
       await loadSheetTable(sheet);
       await refreshCountsOnly();
+      if(["Users","Employees","Contacts","Clients"].includes(sheet)) await loadSystemPeople();
+      if(sheet==="Tasks" || sheet==="ProjectTasks") await renderTaskSummary();
+      if(sheet==="RecurringTasks") await loadRecurringTasks();
+      finishButtonSync(button,true);
     }else{
       showMessage(`${id}_message`,result.message || `Could not save ${sheet}.`,"error");
+      finishButtonSync(button,false);
     }
-  }catch(error){showMessage(`${id}_message`,error.message,"error")}
+  }catch(error){
+    showMessage(`${id}_message`,error.message,"error");
+    finishButtonSync(button,false);
+  }
 }
 function clearGenericForm(sheet, keepDefaults=false){
   const id=cleanId(sheet);
@@ -425,26 +622,304 @@ function clearGenericForm(sheet, keepDefaults=false){
     if(input) input.value = keepDefaults ? defaultValue(sheet,field) : "";
   });
 }
-async function loadSheetTable(sheet){
+async function loadSheetTable(sheet,button){
   const id=cleanId(sheet);
   const fields=SHEET_FIELDS[sheet] || [];
   const table=document.getElementById(`${id}_table`);
   if(!table) return;
+  setButtonSync(button,"Synchronising...");
   try{
     const data=await fetchSheetData(sheet);
     if(!data.length){
       table.innerHTML=`<tr><td colspan="${fields.length}">No records found in ${sheet}.</td></tr>`;
+      finishButtonSync(button,true);
       return;
     }
     table.innerHTML=data.map(row=>`<tr>${fields.map(f=>`<td>${row[f] || ""}</td>`).join("")}</tr>`).join("");
+    finishButtonSync(button,true);
   }catch(error){
     table.innerHTML=`<tr><td colspan="${fields.length}" class="error">${error.message}</td></tr>`;
+    finishButtonSync(button,false);
   }
 }
-async function loadPageData(page){
+async function loadPageData(page,button){
+  setButtonSync(button,"Synchronising...");
   const sheets=PAGE_SHEETS[page] || [];
   for(const sheet of sheets){ await loadSheetTable(sheet); }
+  if(page==="tasks"){
+    await loadSystemPeople();
+    await renderTaskSummary();
+    await loadRecurringTasks();
+  }
+  finishButtonSync(button,true);
 }
+
+
+function selectedTaskPerson(sheet){
+  const id=cleanId(sheet);
+  const select=document.getElementById(`${id}_AssignedTo_Select`);
+  if(!select) return {name:"",email:"",phone:""};
+  return parsePersonOption(select.value);
+}
+
+function taskMessage(sheet,payload){
+  const person = selectedTaskPerson(sheet);
+  const title = payload.Title || payload.TaskName || "New Task";
+  const assignedTo = person.name || payload.AssignedTo || "Assignee";
+  const dueDate = payload.DueDate || "No due date";
+  return `Hello ${assignedTo}, you have been assigned a task: ${title}. Due date: ${dueDate}. Please log in to OnPoint Group to update progress.`;
+}
+function buildWhatsappLink(message,number){
+  const cleanNumber = (number || "").replace(/[^0-9]/g,"");
+  return cleanNumber ? `https://wa.me/${cleanNumber}?text=${encodeURIComponent(message)}` : "";
+}
+
+function buildTaskWhatsappMessage(sheet,payload){
+  const id=cleanId(sheet);
+  const person = selectedTaskPerson(sheet);
+  const message = taskMessage(sheet,payload);
+  let output = "";
+  const whatsappNumber = document.getElementById(`${id}_WhatsappNumber`);
+  const number = (whatsappNumber && whatsappNumber.value) ? whatsappNumber.value : (person.phone || "");
+  const link = buildWhatsappLink(message, number);
+  if(link){
+    output += ` <a class="whatsapp-link" target="_blank" href="${link}">Send WhatsApp Task Message</a>`;
+  }else{
+    output += " Add a WhatsApp number for this person to show the WhatsApp send button.";
+  }
+  return output;
+}
+
+async function notifyTaskAssignee(sheet,payload){
+  const id=cleanId(sheet);
+  const assignedTo = (payload.AssignedTo || "").trim();
+  const message = taskMessage(sheet,payload);
+  let output = "";
+  if(assignedTo && assignedTo.includes("@")){
+    try{
+      const emailResult = await apiPost({
+        action:"sendTaskEmail",
+        to:assignedTo,
+        subject:`New task assigned: ${payload.Title || payload.TaskName || "Task"}`,
+        body:message,
+        payload
+      });
+      if(emailResult && emailResult.status==="success"){
+        output += " Email notification sent.";
+      }else{
+        output += " Email notification requested. If it does not send, add sendTaskEmail support in your Apps Script backend.";
+      }
+    }catch(e){
+      output += " Email notification could not be sent by the current backend. Add sendTaskEmail support in Apps Script to make it automatic.";
+    }
+  }else{
+    output += " Add an email address in AssignedTo to send automatic email notifications.";
+  }
+
+  const sendWhatsapp = document.getElementById(`${id}_SendWhatsapp`);
+  const whatsappNumber = document.getElementById(`${id}_WhatsappNumber`);
+  if(sendWhatsapp && sendWhatsapp.checked){
+    const link = buildWhatsappLink(message, whatsappNumber ? whatsappNumber.value : "");
+    if(link){
+      output += ` <a class="whatsapp-link" target="_blank" href="${link}">Send WhatsApp</a>`;
+    }else{
+      output += " Enter a WhatsApp number to show the WhatsApp send link.";
+    }
+  }
+  return output;
+}
+function parseDateSafe(value){
+  if(!value) return null;
+  const date = new Date(value);
+  return isNaN(date.getTime()) ? null : date;
+}
+function isClosedStatus(status){
+  const s=(status || "").toLowerCase();
+  return ["closed","completed","complete","done","finished"].some(word=>s.includes(word));
+}
+function scoreClass(score){
+  if(score >= 80) return "score-good";
+  if(score >= 50) return "score-warn";
+  return "score-bad";
+}
+function buildTaskSummaryRows(tasks){
+  const people={};
+  const now=new Date();
+  tasks.forEach(task=>{
+    const person=(task.AssignedTo || "Unassigned").trim() || "Unassigned";
+    if(!people[person]) people[person]={total:0,onTime:0,open:0,late:0};
+    people[person].total++;
+    const closed=isClosedStatus(task.Status);
+    const due=parseDateSafe(task.DueDate);
+    const completed=parseDateSafe(task.CompletedDate || task.ClosedDate || task.DateCompleted || task.DateUpdated || task.LastUpdated || task.DateCreated) || now;
+    if(!closed){
+      people[person].open++;
+      return;
+    }
+    if(due && completed > due) people[person].late++;
+    else people[person].onTime++;
+  });
+  return Object.keys(people).sort().map(person=>{
+    const p=people[person];
+    const closed=p.onTime+p.late;
+    const onTimePct=p.total ? Math.round((p.onTime/p.total)*100) : 0;
+    const openPct=p.total ? Math.round((p.open/p.total)*100) : 0;
+    const latePct=p.total ? Math.round((p.late/p.total)*100) : 0;
+    const finalScore=p.total ? Math.round(((p.onTime/p.total)-(p.late/p.total))*100) : 0;
+    return {person,...p,onTimePct,openPct,latePct,finalScore};
+  });
+}
+async function renderTaskSummary(button){
+  setButtonSync(button,"Synchronising...");
+  const el=document.getElementById("taskSummary");
+  if(!el){finishButtonSync(button,true);return;}
+  try{
+    const tasks=await fetchSheetData("Tasks");
+    const rows=buildTaskSummaryRows(tasks || []);
+    if(!rows.length){
+      el.className="notice";
+      el.innerHTML="No task records found yet.";
+      finishButtonSync(button,true);
+      return;
+    }
+    const totals=rows.reduce((acc,row)=>{
+      acc.total+=row.total; acc.onTime+=row.onTime; acc.open+=row.open; acc.late+=row.late;
+      return acc;
+    },{total:0,onTime:0,open:0,late:0});
+    el.className="";
+    el.innerHTML=`
+      <div class="summary-grid">
+        <div class="summary-card"><h4>Total Tasks</h4><p>${totals.total}</p></div>
+        <div class="summary-card"><h4>Closed On Time</h4><p>${totals.onTime}</p></div>
+        <div class="summary-card"><h4>Open</h4><p>${totals.open}</p></div>
+        <div class="summary-card"><h4>Closed Late</h4><p>${totals.late}</p></div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Assigned To</th>
+              <th>Total Tasks</th>
+              <th>Closed On Time</th>
+              <th>On-Time %</th>
+              <th>Open</th>
+              <th>Open %</th>
+              <th>Closed Late</th>
+              <th>Late %</th>
+              <th>Final Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${rows.map(row=>`<tr>
+              <td>${row.person}</td>
+              <td>${row.total}</td>
+              <td>${row.onTime}</td>
+              <td>${row.onTimePct}%</td>
+              <td>${row.open}</td>
+              <td>${row.openPct}%</td>
+              <td>${row.late}</td>
+              <td>${row.latePct}%</td>
+              <td class="${scoreClass(row.finalScore)}">${row.finalScore}%</td>
+            </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>
+      <p class="small-text" style="margin-top:10px">Final Score formula: (Closed On Time / Total Tasks) - (Closed Late / Total Tasks). For closed-late accuracy, add a CompletedDate, ClosedDate, DateCompleted, DateUpdated, or LastUpdated column to your Tasks sheet.</p>
+    `;
+    finishButtonSync(button,true);
+  }catch(error){
+    el.className="error";
+    el.innerHTML=error.message;
+    finishButtonSync(button,false);
+  }
+}
+
+
+function nextRunDateFrom(startDate,frequency){
+  const date = parseDateSafe(startDate) || new Date();
+  const next = new Date(date);
+  const f=(frequency || "Monthly").toLowerCase();
+  if(f==="daily") next.setDate(next.getDate()+1);
+  else if(f==="weekly") next.setDate(next.getDate()+7);
+  else next.setMonth(next.getMonth()+1);
+  return next.toISOString().slice(0,10);
+}
+function recurringPayloadFromForm(){
+  const selected=parsePersonOption(document.getElementById("recurringAssignedTo").value);
+  const start=document.getElementById("recurringStartDate").value || new Date().toISOString().slice(0,10);
+  const frequency=document.getElementById("recurringFrequency").value || "Monthly";
+  return {
+    RecurringTaskID:"REC-"+Date.now(),
+    Title:document.getElementById("recurringTitle").value.trim(),
+    AssignedTo:selected.email || selected.name || "",
+    Frequency:frequency,
+    StartDate:start,
+    NextRunDate:nextRunDateFrom(start,frequency),
+    Status:"Active",
+    WhatsappNumber:document.getElementById("recurringWhatsapp").value.trim() || selected.phone || "",
+    Notes:document.getElementById("recurringNotes").value.trim(),
+    DateCreated:nowIso()
+  };
+}
+async function saveRecurringTask(button){
+  setButtonSync(button,"Synchronising...");
+  try{
+    const payload=recurringPayloadFromForm();
+    if(!payload.Title || !payload.AssignedTo){
+      showMessage("recurringTasksList","Please enter a recurring task title and choose an assigned person.","error");
+      finishButtonSync(button,false);
+      return;
+    }
+    const result=await insertSheetData("RecurringTasks",payload);
+    if(result.status==="success"){
+      await apiPost({action:"sendTaskEmail",to:payload.AssignedTo,subject:`Recurring task created: ${payload.Title}`,body:`You have been assigned a recurring ${payload.Frequency.toLowerCase()} task: ${payload.Title}. First reminder date: ${payload.NextRunDate}. ${payload.Notes || ""}`,payload});
+      showMessage("recurringTasksList","Recurring task saved and reminder email requested.","success");
+      clearRecurringTaskForm();
+      await loadRecurringTasks();
+      finishButtonSync(button,true);
+    }else{
+      showMessage("recurringTasksList",result.message || "Could not save recurring task.","error");
+      finishButtonSync(button,false);
+    }
+  }catch(error){
+    showMessage("recurringTasksList",error.message,"error");
+    finishButtonSync(button,false);
+  }
+}
+function clearRecurringTaskForm(){
+  ["recurringTitle","recurringStartDate","recurringWhatsapp","recurringNotes"].forEach(id=>{const el=document.getElementById(id); if(el) el.value="";});
+  const freq=document.getElementById("recurringFrequency"); if(freq) freq.value="Daily";
+  const assigned=document.getElementById("recurringAssignedTo"); if(assigned) assigned.value="";
+}
+async function loadRecurringTasks(button){
+  setButtonSync(button,"Synchronising...");
+  const el=document.getElementById("recurringTasksList");
+  if(!el){finishButtonSync(button,true);return;}
+  try{
+    const rows=await fetchSheetData("RecurringTasks");
+    if(!rows || !rows.length){
+      el.className="notice";
+      el.innerHTML="No recurring tasks saved yet.";
+      finishButtonSync(button,true);
+      return;
+    }
+    el.className="";
+    el.innerHTML=rows.map(row=>`
+      <div class="recurring-card">
+        <strong>${row.Title || "Recurring Task"}</strong>
+        <div class="small-text">Assigned To: ${row.AssignedTo || ""}</div>
+        <div class="small-text">Frequency: ${row.Frequency || ""} | Next Reminder: ${row.NextRunDate || ""} | Status: ${row.Status || ""}</div>
+        ${row.WhatsappNumber ? `<a class="whatsapp-link" target="_blank" href="${buildWhatsappLink(`Reminder: ${row.Title || "Recurring Task"} is due.`, row.WhatsappNumber)}">Send WhatsApp Reminder</a>` : ""}
+      </div>
+    `).join("");
+    finishButtonSync(button,true);
+  }catch(error){
+    el.className="error";
+    el.innerHTML=error.message;
+    finishButtonSync(button,false);
+  }
+}
+
 async function checkConnection(){
   try{
     if(!isConfigured()){
@@ -456,31 +931,33 @@ async function checkConnection(){
     if(status.status==="success"){
       setConnectionStatus(true,"Connected to Google Sheets");
       const info=document.getElementById("sheetInfo");
-      if(info) info.innerHTML=`<strong>Connected.</strong><br><br><strong>Available tabs:</strong> ${status.tabs.join(", ")}`;
+      if(info) info.innerHTML=`<strong>Connected to Google Sheets successfully.</strong>`;
     }else setConnectionStatus(false,status.message || "Connection failed");
   }catch(error){
     setConnectionStatus(false,"Connection failed");
     const info=document.getElementById("sheetInfo"); if(info) info.innerHTML=error.message;
   }
 }
-async function registerUser(){
+async function registerUser(button){
+  setButtonSync(button,"Synchronising...");
   try{
     const payload={UserID:"USR-"+Date.now(),FullName:document.getElementById("regFullName").value.trim(),Email:document.getElementById("regEmail").value.trim().toLowerCase(),Password:document.getElementById("regPassword").value,Role:document.getElementById("regRole").value,Status:"Active",DateCreated:nowIso()};
-    if(!payload.FullName || !payload.Email || !payload.Password){showMessage("authMessage","Please complete all registration fields.","error");return}
+    if(!payload.FullName || !payload.Email || !payload.Password){showMessage("authMessage","Please complete all registration fields.","error");finishButtonSync(button,false);return}
     const result=await apiPost({action:"register",sheet:"Users",payload});
-    if(result.status==="success"){showMessage("authMessage","Account created. You can now login.","success");showAuthTabManual("login")}
-    else showMessage("authMessage",result.message || "Registration failed.","error");
-  }catch(error){showMessage("authMessage",error.message,"error")}
+    if(result.status==="success"){showMessage("authMessage","Account created. You can now login.","success");showAuthTabManual("login");finishButtonSync(button,true)}
+    else {showMessage("authMessage",result.message || "Registration failed.","error");finishButtonSync(button,false)}
+  }catch(error){showMessage("authMessage",error.message,"error");finishButtonSync(button,false)}
 }
-async function loginUser(){
+async function loginUser(button){
+  setButtonSync(button,"Synchronising...");
   try{
     const email=document.getElementById("loginEmail").value.trim().toLowerCase();
     const password=document.getElementById("loginPassword").value;
-    if(!email || !password){showMessage("authMessage","Enter email and password.","error");return}
+    if(!email || !password){showMessage("authMessage","Enter email and password.","error");finishButtonSync(button,false);return}
     const result=await apiPost({action:"login",sheet:"Users",email,password});
-    if(result.status==="success"){currentUser=result.user;localStorage.setItem("onpointUser",JSON.stringify(currentUser));openApp()}
-    else showMessage("authMessage",result.message || "Login failed.","error");
-  }catch(error){showMessage("authMessage",error.message,"error")}
+    if(result.status==="success"){currentUser=result.user;localStorage.setItem("onpointUser",JSON.stringify(currentUser));finishButtonSync(button,true);openApp()}
+    else {showMessage("authMessage",result.message || "Login failed.","error");finishButtonSync(button,false)}
+  }catch(error){showMessage("authMessage",error.message,"error");finishButtonSync(button,false)}
 }
 function openApp(){
   document.getElementById("authScreen").classList.add("hidden");
@@ -488,11 +965,13 @@ function openApp(){
   document.getElementById("userLabel").innerText=currentUser ? `${currentUser.FullName || currentUser.Email} (${currentUser.Role || "User"})` : "Logged in";
   refreshAll();
 }
-function logoutUser(){
+function logoutUser(button){
+  setButtonSync(button,"Synchronising...");
   localStorage.removeItem("onpointUser");
   currentUser=null;
   document.getElementById("appShell").classList.add("hidden");
   document.getElementById("authScreen").classList.remove("hidden");
+  finishButtonSync(button,true);
 }
 async function loadCount(sheet, elementId){
   try{const data=await fetchSheetData(sheet); const el=document.getElementById(elementId); if(el) el.innerText=data.length}
@@ -506,16 +985,22 @@ async function refreshCountsOnly(){
   await loadCount("Tasks","taskCount");
   await loadCount("Expenses","expenseCount");
 }
-async function refreshAll(){
+async function refreshAll(button){
+  setButtonSync(button,"Synchronising...");
   await checkConnection();
   await refreshCountsOnly();
   await loadPageData("dashboard");
   await loadPageData("crm");
   await loadPageData("tasks");
+  await loadSystemPeople();
+  await renderTaskSummary();
+  await loadRecurringTasks();
+  finishButtonSync(button,true);
 }
 window.addEventListener("load",async()=>{
   buildAllSections();
   await checkConnection();
+  await loadSystemPeople();
   if(currentUser) openApp();
 });
 </script>
