@@ -155,7 +155,13 @@ button.synced{background:var(--green)!important;color:white!important}
     <a class="nav-link" onclick="showPage('inventory', this)">Inventory</a>
     <a class="nav-link" onclick="showPage('finance', this)">Finance</a>
     <a class="nav-link" onclick="showPage('logistics', this)">Logistics</a>
-    <a class="nav-link" onclick="showPage('settings', this)">Settings</a>
+    
+    <a class="nav-link" onclick="showPage('workflowBuilder', this)">Workflow Builder</a>
+    <a class="nav-link" onclick="showPage('approvals', this)">Approvals</a>
+    <a class="nav-link" onclick="showPage('automations', this)">Automations</a>
+    <a class="nav-link" onclick="showPage('apiIntegrations', this)">API Integrations</a>
+    
+<a class="nav-link" onclick="showPage('settings', this)">Settings</a>
     <div class="sidebar-footer">
       <div id="userLabel">Logged in</div><br>
       <button class="danger full" onclick="logoutUser(this)">Logout</button>
@@ -282,7 +288,149 @@ button.synced{background:var(--green)!important;color:white!important}
         </div>
       </div>
     </section>
-  </main>
+  
+<section id="workflowBuilder" class="page">
+<div class="section">
+<div class="section-header"><h2>Visual Workflow Builder</h2></div>
+<div class="notice">Triggers, conditional logic, approvals, escalations and automation workflows enabled.</div>
+<div class="grid">
+<input placeholder="Workflow Name">
+<select><option>Tasks</option><option>Projects</option><option>CRM</option></select>
+<select><option>When Record Is Created</option><option>When Record Is Updated</option><option>Scheduled</option></select>
+<select><option>Send Email</option><option>Send WhatsApp</option><option>Request Approval</option><option>Escalate</option></select>
+</div>
+<textarea placeholder="Workflow Action Message"></textarea>
+<button>Save Workflow</button>
+</div>
+</section>
+
+<section id="approvals" class="page">
+<div class="section">
+  <div class="section-header">
+    <h2>Approvals</h2>
+    <button onclick="loadApprovals(this)">Refresh Approvals</button>
+  </div>
+  <div class="notice">Create, review and update approval requests.</div>
+
+  <div class="grid">
+    <input id="approvalModule" type="text" placeholder="Module, e.g. Tasks, Expenses, LeaveRequests">
+    <input id="approvalRecordID" type="text" placeholder="Record ID">
+    <input id="approvalRequestedBy" type="email" placeholder="Requested By Email">
+    <input id="approvalApprover" type="email" placeholder="Approver Email">
+    <select id="approvalStatus">
+      <option>Pending</option>
+      <option>Approved</option>
+      <option>Rejected</option>
+    </select>
+  </div>
+  <textarea id="approvalComments" placeholder="Approval comments"></textarea>
+  <div class="form-actions">
+    <button onclick="saveApprovalRequest(this)">Save Approval Request</button>
+    <button class="secondary" onclick="clearApprovalForm()">Clear</button>
+  </div>
+  <br>
+  <div id="approvalsMessage"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ApprovalID</th><th>Module</th><th>RecordID</th><th>RequestedBy</th><th>Approver</th><th>Status</th><th>DateCreated</th><th>ApprovedDate</th><th>Comments</th><th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="approvalsTable"><tr><td colspan="10">Click Refresh Approvals.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<section id="automations" class="page">
+<div class="section">
+  <div class="section-header">
+    <h2>Scheduled Automations</h2>
+    <button onclick="loadScheduledJobs(this)">Refresh Automations</button>
+  </div>
+  <div class="notice">Create daily, weekly or monthly scheduled email reminders.</div>
+
+  <div class="grid">
+    <input id="jobName" type="text" placeholder="Automation Name">
+    <select id="jobFrequency">
+      <option>Daily</option>
+      <option>Weekly</option>
+      <option>Monthly</option>
+    </select>
+    <input id="jobEmail" type="email" placeholder="Recipient Email">
+    <input id="jobNextRun" type="date" placeholder="Next Run Date">
+    <select id="jobStatus">
+      <option>Active</option>
+      <option>Paused</option>
+      <option>Inactive</option>
+    </select>
+  </div>
+  <textarea id="jobMessage" placeholder="Reminder message"></textarea>
+  <div class="form-actions">
+    <button onclick="saveScheduledJob(this)">Save Automation</button>
+    <button class="secondary" onclick="clearScheduledJobForm()">Clear</button>
+    <button class="secondary" onclick="activateAutomationTrigger(this)">Activate Hourly Trigger</button>
+  </div>
+  <br>
+  <div id="automationsMessage"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>JobID</th><th>Name</th><th>Frequency</th><th>Email</th><th>Message</th><th>Status</th><th>DateCreated</th><th>LastRun</th><th>NextRun</th>
+        </tr>
+      </thead>
+      <tbody id="scheduledJobsTable"><tr><td colspan="9">Click Refresh Automations.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+<section id="apiIntegrations" class="page">
+<div class="section">
+  <div class="section-header">
+    <h2>API Integrations</h2>
+    <button onclick="loadApiConnections(this)">Refresh APIs</button>
+  </div>
+  <div class="notice">Save API endpoints for external integrations and workflow actions.</div>
+
+  <div class="grid">
+    <input id="apiName" type="text" placeholder="API Name">
+    <input id="apiEndpoint" type="url" placeholder="API Endpoint URL">
+    <input id="apiKey" type="password" placeholder="API Key / Bearer Token">
+    <select id="apiMethod">
+      <option>post</option>
+      <option>get</option>
+      <option>put</option>
+    </select>
+    <select id="apiStatus">
+      <option>Active</option>
+      <option>Inactive</option>
+    </select>
+  </div>
+  <textarea id="apiTestPayload" placeholder='Optional test payload JSON, e.g. {"message":"hello"}'></textarea>
+  <div class="form-actions">
+    <button onclick="saveApiIntegration(this)">Save API Integration</button>
+    <button class="secondary" onclick="testApiIntegration(this)">Test API</button>
+    <button class="secondary" onclick="clearApiForm()">Clear</button>
+  </div>
+  <br>
+  <div id="apiMessage"></div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>ApiID</th><th>Name</th><th>Endpoint</th><th>Method</th><th>Status</th><th>DateCreated</th>
+        </tr>
+      </thead>
+      <tbody id="apiConnectionsTable"><tr><td colspan="6">Click Refresh APIs.</td></tr></tbody>
+    </table>
+  </div>
+</div>
+</section>
+
+</main>
 </div>
 
 <script>
@@ -292,7 +440,7 @@ button.synced{background:var(--green)!important;color:white!important}
   2. Copy the Web App URL.
   3. Paste it below in API_URL.
 */
-const API_URL = "https://script.google.com/macros/s/AKfycbziXC6NbqnXYvUPVxy4KoiqZfDh-oR9vCEO1RRxv0SPHghCoa0JghfldQC0C3gqQH25/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbw4ygu6RkJ9xD7HyGs7alz1BxMorekcyPi7Sgth_9VNqRqS5phwy7mRyXuXs1PS7pkcRg/exec";
 
 let currentUser = JSON.parse(localStorage.getItem("onpointUser") || "null");
 let systemPeople = [];
@@ -651,6 +799,9 @@ async function loadPageData(page,button){
     await renderTaskSummary();
     await loadRecurringTasks();
   }
+  if(page==="approvals") await loadApprovals();
+  if(page==="automations") await loadScheduledJobs();
+  if(page==="apiIntegrations") await loadApiConnections();
   finishButtonSync(button,true);
 }
 
@@ -919,6 +1070,276 @@ async function loadRecurringTasks(button){
     finishButtonSync(button,false);
   }
 }
+
+
+function htmlEscape(value){
+  return String(value ?? "").replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+async function saveApprovalRequest(button){
+  setButtonSync(button,"Synchronising...");
+  try{
+    const payload={
+      ApprovalID:"APR-"+Date.now(),
+      WorkflowID:"",
+      Module:document.getElementById("approvalModule").value.trim(),
+      RecordID:document.getElementById("approvalRecordID").value.trim(),
+      RequestedBy:document.getElementById("approvalRequestedBy").value.trim(),
+      Approver:document.getElementById("approvalApprover").value.trim(),
+      Status:document.getElementById("approvalStatus").value,
+      DateCreated:nowIso(),
+      ApprovedDate:"",
+      Comments:document.getElementById("approvalComments").value.trim()
+    };
+    if(!payload.Module || !payload.RecordID || !payload.Approver){
+      showMessage("approvalsMessage","Please enter Module, Record ID and Approver.","error");
+      finishButtonSync(button,false);
+      return;
+    }
+    const result=await insertSheetData("WorkflowApprovals",payload);
+    if(result.status==="success"){
+      showMessage("approvalsMessage","Approval request saved.","success");
+      clearApprovalForm();
+      await loadApprovals();
+      finishButtonSync(button,true);
+    }else{
+      showMessage("approvalsMessage",result.message || "Could not save approval.","error");
+      finishButtonSync(button,false);
+    }
+  }catch(error){
+    showMessage("approvalsMessage",error.message,"error");
+    finishButtonSync(button,false);
+  }
+}
+
+function clearApprovalForm(){
+  ["approvalModule","approvalRecordID","approvalRequestedBy","approvalApprover","approvalComments"].forEach(id=>{const el=document.getElementById(id); if(el) el.value="";});
+  const status=document.getElementById("approvalStatus"); if(status) status.value="Pending";
+}
+
+async function loadApprovals(button){
+  setButtonSync(button,"Synchronising...");
+  const table=document.getElementById("approvalsTable");
+  if(!table){finishButtonSync(button,true);return;}
+  try{
+    const rows=await fetchSheetData("WorkflowApprovals");
+    if(!rows || !rows.length){
+      table.innerHTML='<tr><td colspan="10">No approval requests found.</td></tr>';
+      finishButtonSync(button,true);
+      return;
+    }
+    table.innerHTML=rows.map(row=>`<tr>
+      <td>${htmlEscape(row.ApprovalID)}</td>
+      <td>${htmlEscape(row.Module)}</td>
+      <td>${htmlEscape(row.RecordID)}</td>
+      <td>${htmlEscape(row.RequestedBy)}</td>
+      <td>${htmlEscape(row.Approver)}</td>
+      <td>${htmlEscape(row.Status)}</td>
+      <td>${htmlEscape(row.DateCreated)}</td>
+      <td>${htmlEscape(row.ApprovedDate)}</td>
+      <td>${htmlEscape(row.Comments)}</td>
+      <td>
+        <button onclick="updateApprovalStatus('${htmlEscape(row.ApprovalID)}','Approved',this)">Approve</button>
+        <button class="danger" onclick="updateApprovalStatus('${htmlEscape(row.ApprovalID)}','Rejected',this)">Reject</button>
+      </td>
+    </tr>`).join("");
+    finishButtonSync(button,true);
+  }catch(error){
+    table.innerHTML=`<tr><td colspan="10" class="error">${htmlEscape(error.message)}</td></tr>`;
+    finishButtonSync(button,false);
+  }
+}
+
+async function updateApprovalStatus(approvalId,status,button){
+  setButtonSync(button,"Synchronising...");
+  try{
+    const result=await apiPost({action:"updateApproval",approvalId,status,comments:"Updated from dashboard"});
+    if(result.status==="success"){
+      await loadApprovals();
+      finishButtonSync(button,true);
+    }else{
+      showMessage("approvalsMessage",result.message || "Could not update approval.","error");
+      finishButtonSync(button,false);
+    }
+  }catch(error){
+    showMessage("approvalsMessage",error.message,"error");
+    finishButtonSync(button,false);
+  }
+}
+
+async function saveScheduledJob(button){
+  setButtonSync(button,"Synchronising...");
+  try{
+    const payload={
+      JobID:"JOB-"+Date.now(),
+      Name:document.getElementById("jobName").value.trim(),
+      Frequency:document.getElementById("jobFrequency").value,
+      Email:document.getElementById("jobEmail").value.trim(),
+      Message:document.getElementById("jobMessage").value.trim(),
+      Status:document.getElementById("jobStatus").value,
+      DateCreated:nowIso(),
+      LastRun:"",
+      NextRun:document.getElementById("jobNextRun").value
+    };
+    if(!payload.Name || !payload.Email || !payload.Message){
+      showMessage("automationsMessage","Please enter Automation Name, Recipient Email and Message.","error");
+      finishButtonSync(button,false);
+      return;
+    }
+    const result=await insertSheetData("ScheduledJobs",payload);
+    if(result.status==="success"){
+      showMessage("automationsMessage","Scheduled automation saved.","success");
+      clearScheduledJobForm();
+      await loadScheduledJobs();
+      finishButtonSync(button,true);
+    }else{
+      showMessage("automationsMessage",result.message || "Could not save automation.","error");
+      finishButtonSync(button,false);
+    }
+  }catch(error){
+    showMessage("automationsMessage",error.message,"error");
+    finishButtonSync(button,false);
+  }
+}
+
+function clearScheduledJobForm(){
+  ["jobName","jobEmail","jobMessage","jobNextRun"].forEach(id=>{const el=document.getElementById(id); if(el) el.value="";});
+  const freq=document.getElementById("jobFrequency"); if(freq) freq.value="Daily";
+  const status=document.getElementById("jobStatus"); if(status) status.value="Active";
+}
+
+async function loadScheduledJobs(button){
+  setButtonSync(button,"Synchronising...");
+  const table=document.getElementById("scheduledJobsTable");
+  if(!table){finishButtonSync(button,true);return;}
+  try{
+    const rows=await fetchSheetData("ScheduledJobs");
+    if(!rows || !rows.length){
+      table.innerHTML='<tr><td colspan="9">No scheduled automations found.</td></tr>';
+      finishButtonSync(button,true);
+      return;
+    }
+    table.innerHTML=rows.map(row=>`<tr>
+      <td>${htmlEscape(row.JobID)}</td>
+      <td>${htmlEscape(row.Name)}</td>
+      <td>${htmlEscape(row.Frequency)}</td>
+      <td>${htmlEscape(row.Email)}</td>
+      <td>${htmlEscape(row.Message)}</td>
+      <td>${htmlEscape(row.Status)}</td>
+      <td>${htmlEscape(row.DateCreated)}</td>
+      <td>${htmlEscape(row.LastRun)}</td>
+      <td>${htmlEscape(row.NextRun)}</td>
+    </tr>`).join("");
+    finishButtonSync(button,true);
+  }catch(error){
+    table.innerHTML=`<tr><td colspan="9" class="error">${htmlEscape(error.message)}</td></tr>`;
+    finishButtonSync(button,false);
+  }
+}
+
+async function activateAutomationTrigger(button){
+  setButtonSync(button,"Synchronising...");
+  try{
+    const result=await apiPost({action:"createAutomationTriggers"});
+    showMessage("automationsMessage",result.message || "Automation trigger checked.","success");
+    finishButtonSync(button,true);
+  }catch(error){
+    showMessage("automationsMessage",error.message,"error");
+    finishButtonSync(button,false);
+  }
+}
+
+async function saveApiIntegration(button){
+  setButtonSync(button,"Synchronising...");
+  try{
+    const payload={
+      ApiID:"API-"+Date.now(),
+      Name:document.getElementById("apiName").value.trim(),
+      Endpoint:document.getElementById("apiEndpoint").value.trim(),
+      ApiKey:document.getElementById("apiKey").value.trim(),
+      Method:document.getElementById("apiMethod").value,
+      Status:document.getElementById("apiStatus").value,
+      DateCreated:nowIso()
+    };
+    if(!payload.Name || !payload.Endpoint){
+      showMessage("apiMessage","Please enter API Name and Endpoint URL.","error");
+      finishButtonSync(button,false);
+      return;
+    }
+    const result=await insertSheetData("ApiConnections",payload);
+    if(result.status==="success"){
+      showMessage("apiMessage","API integration saved.","success");
+      clearApiForm();
+      await loadApiConnections();
+      finishButtonSync(button,true);
+    }else{
+      showMessage("apiMessage",result.message || "Could not save API integration.","error");
+      finishButtonSync(button,false);
+    }
+  }catch(error){
+    showMessage("apiMessage",error.message,"error");
+    finishButtonSync(button,false);
+  }
+}
+
+function clearApiForm(){
+  ["apiName","apiEndpoint","apiKey","apiTestPayload"].forEach(id=>{const el=document.getElementById(id); if(el) el.value="";});
+  const method=document.getElementById("apiMethod"); if(method) method.value="post";
+  const status=document.getElementById("apiStatus"); if(status) status.value="Active";
+}
+
+async function loadApiConnections(button){
+  setButtonSync(button,"Synchronising...");
+  const table=document.getElementById("apiConnectionsTable");
+  if(!table){finishButtonSync(button,true);return;}
+  try{
+    const rows=await fetchSheetData("ApiConnections");
+    if(!rows || !rows.length){
+      table.innerHTML='<tr><td colspan="6">No API integrations found.</td></tr>';
+      finishButtonSync(button,true);
+      return;
+    }
+    table.innerHTML=rows.map(row=>`<tr>
+      <td>${htmlEscape(row.ApiID)}</td>
+      <td>${htmlEscape(row.Name)}</td>
+      <td>${htmlEscape(row.Endpoint)}</td>
+      <td>${htmlEscape(row.Method)}</td>
+      <td>${htmlEscape(row.Status)}</td>
+      <td>${htmlEscape(row.DateCreated)}</td>
+    </tr>`).join("");
+    finishButtonSync(button,true);
+  }catch(error){
+    table.innerHTML=`<tr><td colspan="6" class="error">${htmlEscape(error.message)}</td></tr>`;
+    finishButtonSync(button,false);
+  }
+}
+
+async function testApiIntegration(button){
+  setButtonSync(button,"Synchronising...");
+  try{
+    let payload={};
+    const raw=document.getElementById("apiTestPayload").value.trim();
+    if(raw) payload=JSON.parse(raw);
+    const result=await apiPost({
+      action:"callExternalApi",
+      endpoint:document.getElementById("apiEndpoint").value.trim(),
+      method:document.getElementById("apiMethod").value,
+      apiKey:document.getElementById("apiKey").value.trim(),
+      payload
+    });
+    if(result.status==="success"){
+      showMessage("apiMessage","API test completed. Response status: "+(result.response && result.response.status ? result.response.status : "OK"),"success");
+      finishButtonSync(button,true);
+    }else{
+      showMessage("apiMessage",result.message || "API test failed.","error");
+      finishButtonSync(button,false);
+    }
+  }catch(error){
+    showMessage("apiMessage",error.message,"error");
+    finishButtonSync(button,false);
+  }
+}
+
 
 async function checkConnection(){
   try{
